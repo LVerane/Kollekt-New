@@ -94,31 +94,41 @@ module.exports = {
     db.Profile.updateOne(
       { collections: req.params.collectionId, _id: req.params.profileId },
       { $pull: { collections: req.params.collectionId } }
-    )
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+    ).then(console.log("profile update happens"));
+    // .then(res => console.log(res))
+    // .catch(err => console.log(err));
     //delete collections and items only if there is only one with a matching id, just in case two collections have the same id
-    db.Collection.find({ _id: req.params.collectionId }).then(res => {
+    db.Collection.find({ _id: req.params.collectionId }).then(async res => {
+      console.log("collection find happens");
       if (res.length === 1) {
         //do the thing
-        db.Item.deleteMany({ collectionId: req.params.collectionId })
-          .then(
+        await db.Item.deleteMany({
+          collectionId: req.params.collectionId
+        })
+          .then(async res => {
+            console.log("delete many items happens");
             //using profileId on remove to make sure it only deletes collections from the right profile, just in case two collections have the same id
             //redundant with the previous check for only one collection
-            db.Collection.deleteOne({
+            await db.Collection.deleteOne({
               _id: req.params.collectionId,
               profileId: req.params.profileId
             })
-              .then(dbModel => res.json(dbModel))
-              .catch(err => res.json(err))
-          )
-          .catch(err => res.json(err));
-      } else {
-        res.json({
-          msg:
-            "Internal error: multiple collections have the same id. Collections and Items cannot be deleted for safety reasons"
-        });
+              .then(res => {
+                console.log("delete one collection happens");
+                return "test";
+              })
+              // .then(dbModel => res.json(dbModel))
+              .catch(err => console.log(err));
+          })
+          // .then(dbModel => res.json(dbModel));
+          .catch(err => console.log(err));
+        // } else {
+        //   res.json({
+        //     msg:
+        //       "Internal error: multiple collections have the same id. Collections and Items cannot be deleted for safety reasons"
+        //   });
       }
+      return "test";
     });
   },
   update: function(req, res) {
