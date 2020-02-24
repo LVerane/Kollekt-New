@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const ItemSchema = new Schema({
   // title: String,
-  text0: String,
   text1: String,
   text2: String,
   text3: String,
@@ -11,15 +10,16 @@ const ItemSchema = new Schema({
   text5: String,
   text6: String,
   text7: String,
-  number0: Number,
+  text8: String,
   number1: Number,
   number2: Number,
   number3: Number,
   number4: Number,
   number5: Number,
+  number6: Number,
   // category: String, //assigned by user to all of them //I think that should go somewhere else
-  date0: String,
   date1: String,
+  date2: String,
   image: String,
   collectionId: String
 });

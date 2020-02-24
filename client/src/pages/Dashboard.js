@@ -20,8 +20,7 @@ class Dashboard extends Component {
     searchAllCollectionsResult: [],
     isPrivate: true,
     customCollectionFields: {},
-    customFields: {},
-    newItemFields: { text: [], number: [], date: [] }
+    customFields: {}
   };
 
   // collectionsToState = async text => {
@@ -48,7 +47,6 @@ class Dashboard extends Component {
     this.setState({
       [name]: value
     });
-    // console.log(this.state[name]);
   };
 
   handleCheckboxChange = event => {
@@ -117,6 +115,10 @@ class Dashboard extends Component {
         ];
         image = "/assets/images/vinyl.jpg";
         break;
+      case "Custom":
+        itemFields = this.CreateCustomCollection();
+        image = "/assets/images/vinyl.jpg";
+        break;
       default:
         return;
     }
@@ -128,12 +130,11 @@ class Dashboard extends Component {
       image: image,
       profileId: id
     };
-    console.log(newCollection);
+    // console.log(newCollection);
     API.createCollection(newCollection)
       .then(res => {
         console.log(res.data);
         window.location.reload();
-        // this.searchAllCollections(); //replace with a search for your collections
       })
       .catch(err => console.log(err));
   };
@@ -148,26 +149,6 @@ class Dashboard extends Component {
       .catch(err => console.log(err));
   };
 
-  // selectCustomField = async name => {
-  //   console.log(name);
-  //   let newBoolean;
-  //   //could make customCollection an empty state by default instead of the && clause
-  //   // if (this.state.customCollection && this.state.customCollection[name]) {
-  //   //made an empty state by default to solve empty prop issues on components
-  //   if (this.state.customCollection[name]) {
-  //     newBoolean = false;
-  //   } else {
-  //     newBoolean = true;
-  //   }
-  //   await this.setState(prevState => ({
-  //     customCollection: {
-  //       ...prevState.customCollection,
-  //       [name]: newBoolean
-  //     }
-  //   }));
-  //   console.log(this.state.customCollection);
-  // };
-
   selectCustomField = async (number, type) => {
     console.log(number + " " + type);
     await this.setState(prevState => ({
@@ -178,42 +159,29 @@ class Dashboard extends Component {
     }));
     console.log(this.state.customCollectionFields);
 
-    // this.state.customCollectionFields.map((item, index)=>{
-
-    // })
-
-    //     this.setState({
-    //   searchResult: this.state.searchResult.concat(res.data)
-    // });
-    //creating a separate state array for each and joining them later seems better
-    [...Array(number)].map(async (e, i) => {
-      await this.setState(prevState => ({
-        newItemFields: {
-          ...prevState.newItemFields,
-          [type]: [
-            ...this.state.newItemFields[type],
-            { name: type + i, type: type, displayName: "" }
-          ]
-        }
-      }));
+    await this.setState({
+      numberOfFields:
+        (this.state.customCollectionFields.text || 0) +
+        (this.state.customCollectionFields.number || 0) +
+        (this.state.customCollectionFields.date || 0)
     });
-    console.log(this.state.newItemFields);
-    // console.log("-");
-    // const test = [...Array(number)];
-    // console.log(test.length);
-    // console.log("-");
+    console.log(this.state.numberOfFields);
 
-    // this.setState({ type: number });
-    // newItemFields[type]
-    // await this.setState(prevState => ({
-    //   newItemFields: {
-    //     ...prevState.newItemFields,
-    //     [type]: number
-    //   }
-    // }));
+    //creating a separate state array for each and joining them later seems better //edit: too complicated to operate on
+    // [...Array(number)].map(async (e, i) => {
+    //   await this.setState(prevState => ({
+    //     newItemFields: {
+    //       ...prevState.newItemFields,
+    //       [type]: [
+    //         ...this.state.newItemFields[type],
+    //         { name: type + i, type: type, displayName: "" }
+    //       ]
+    //     }
+    //   }));
+    // });
+    // console.log(this.state.newItemFields);
   };
-  // {[...Array(props.customCollectionFields.text || 0)].map((e, i) => (
-  // newItemFields
+
   updateCustomFields = async event => {
     const { name, value } = event.target;
     await this.setState(prevState => ({
@@ -223,47 +191,38 @@ class Dashboard extends Component {
         [name]: value // update the value of specific key
       }
     }));
-    console.log(this.state.customFields);
+    // console.log(this.state.customFields);
   };
 
-  updateNewFields = event => {
-    //name is a position and text should be a variable passed
-    const { name, value } = event.target;
-    // console.log(name);
-    // console.log(value);
-    // this.setState(prevState => ({
-    //   newItemFields: {
-    //     ...prevState.newItemFields,
-    //     text: [...this.state.newItemFields.text[name], { displayName: value }]
-    //   }
-    // }));
-    console.log(this.state.newItemFields);
-  };
-
-  //mostly does the thing, but in a clunky way
-  tempCreateCustom = event => {
-    event.preventDefault();
-    console.log("---");
-    console.log(this.state.customFields);
-    console.log("---");
+  CreateCustomCollection = () => {
+    // event.preventDefault();
     const objKeys = Object.keys(this.state.customFields);
     const objValues = Object.values(this.state.customFields);
-    const itemFields = [{ name: "image", type: "text", displayName: "Image" }];
-    console.log("object keys");
-    console.log(objKeys);
-    console.log("object values");
-    console.log(objValues);
-    console.log("full object");
-    console.log(this.state.customFields);
-    //setting type: "text" to all, change that later
-    objKeys.forEach((objKey, index) => {
-      itemFields.push({
-        name: objKey,
-        type: "text",
-        displayName: objValues[index]
+    //if all fields got a value and that value isn't "" (empty)
+    if (
+      this.state.numberOfFields === objValues.length &&
+      objValues.indexOf("") === -1
+    ) {
+      const itemFields = [
+        { name: "image", type: "text", displayName: "Image" }
+      ];
+      // console.log("object keys");
+      // console.log(objKeys);
+      // console.log("object values");
+      // console.log(objValues);
+      // console.log("full object");
+      // console.log(this.state.customFields);
+      objKeys.forEach((objKey, index) => {
+        itemFields.push({
+          name: objKey,
+          type: objKey.slice(0, objKey.length - 1),
+          displayName: objValues[index]
+        });
       });
-    });
-    console.log(itemFields);
+      return itemFields;
+    } else {
+      return alert("All fields must be filled");
+    }
   };
 
   render() {
@@ -272,8 +231,6 @@ class Dashboard extends Component {
         <Nav />
         <div className="masthead3 pt-5">
           <div className="search-container3">
-            {/* Profile isnt actually being used */}
-            {/* <Profile /> */}
             {/* <div className="search-container3"> */}
             <Dashboardjs />
             {/* </div> */}
@@ -288,18 +245,17 @@ class Dashboard extends Component {
           setCollectionType={this.setCollectionType}
           handleInputChange={this.handleInputChange}
           handleFormSubmit={this.handleFormSubmit}
-          // selectCustomField={this.selectCustomField}
-          // customCollection={this.state.customCollection}
         />
-        <CustomCollection
-          selectCustomField={this.selectCustomField}
-          customCollectionFields={this.state.customCollectionFields}
-          updateCustomFields={this.updateCustomFields}
-          customFields={this.state.customFields}
-          tempCreateCustom={this.tempCreateCustom}
-          newItemFields={this.state.newItemFields}
-          updateNewFields={this.updateNewFields}
-        />
+        {this.state.type === "Custom" && (
+          <CustomCollection
+            selectCustomField={this.selectCustomField}
+            customCollectionFields={this.state.customCollectionFields}
+            updateCustomFields={this.updateCustomFields}
+            customFields={this.state.customFields}
+            CreateCustomCollection={this.CreateCustomCollection}
+            updateNewFields={this.updateNewFields}
+          />
+        )}
         <ShowCollection deleteCollection={this.deleteCollection} />
         <Footer />
       </div>

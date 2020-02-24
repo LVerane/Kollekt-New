@@ -5,14 +5,6 @@ import SetCustomFields from "./SetCustomFields";
 import InputField from "../InputField";
 
 function CustomCollection(props) {
-  // itemFields = [
-  //   { name: "image", type: "text", displayName: "Image" },
-  //   { name: "text1", type: "text", displayName: "Name" },
-  //   { name: "text2", type: "text", displayName: "Description" },
-  //   { name: "date1", type: "date", displayName: "Date" },
-  //   { name: "number1", type: "number", displayName: "Quantity" }
-  // ];
-  // const typeOptions = ["Music", "Comics", "Currency", "Cards", "Other"];
   return (
     <div>
       <div className="form-inline">
@@ -43,8 +35,8 @@ function CustomCollection(props) {
             key={i}
             value={props.customFields.item}
             onChange={props.updateCustomFields}
-            name={`text${i}`}
-            placeholder={`text field #${i}`}
+            name={`text${i + 1}`}
+            placeholder={`text field #${i + 1}`}
             className="form-control input"
           />
         ))}
@@ -53,10 +45,9 @@ function CustomCollection(props) {
             key={i}
             value={props.customFields.item}
             onChange={props.updateCustomFields}
-            name={`number${i}`}
-            placeholder={`number field #${i}`}
+            name={`number${i + 1}`}
+            placeholder={`number field #${i + 1}`}
             className="form-control input"
-            type="number"
           />
         ))}
         {[...Array(props.customCollectionFields.date || 0)].map((e, i) => (
@@ -64,29 +55,13 @@ function CustomCollection(props) {
             key={i}
             value={props.customFields.item}
             onChange={props.updateCustomFields}
-            name={`date${i}`}
-            placeholder={`date field #${i}`}
+            name={`date${i + 1}`}
+            placeholder={`date field #${i + 1}`}
             className="form-control input"
-            type="date"
           />
         ))}
-        <button onClick={e => props.tempCreateCustom(e)}>Test!</button>
+        {/* <button onClick={e => props.tempCreateCustom(e)}>Test!</button> */}
       </form>
-      {/* <form className="form-inline">
-        {props.newItemFields.text.map((e, i) => (
-          // <span key={i}>♦{e}</span>
-          // <input name={`text${i}`} placeholder="♦"></input>
-          <InputField
-            key={i}
-            value={e.displayName}
-            onChange={props.updateNewFields}
-            name={i}
-            placeholder={`text field #${i}`}
-            className="form-control input"
-          />
-        ))}
-        <button onClick={e => props.tempCreateCustom(e)}>Test!</button>
-      </form> */}
     </div>
   );
 }
