@@ -3,7 +3,14 @@ import AddForm from "../AddForm";
 import DropdownButton from "../DropdownButton";
 
 function SetType(props) {
-  const typeOptions = ["Music", "Comics", "Currency", "Cards", "Other"];
+  const typeOptions = [
+    "Music",
+    "Comics",
+    "Currency",
+    "Cards",
+    "Other",
+    "Custom"
+  ];
   return (
     <AddForm text={props.type || props.text}>
       {typeOptions.map((typeOption, index) => (

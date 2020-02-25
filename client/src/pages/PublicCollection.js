@@ -5,7 +5,7 @@ import Card from "../components/Cards";
 import Spinner from "../components/layout/Spinner";
 import "./publicCollection.css";
 import Footer from "../components/Footer";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 class Public extends Component {
   state = {
@@ -57,7 +57,10 @@ class Public extends Component {
               </div>
             </div>
             {this.state.profile.collections.length ? (
-              <div className="pt-4 container row collection-row justify-content-center">
+              <div
+                className="pt-4 container row collection-row justify-content-center"
+                style={{ margin: "auto" }}
+              >
                 {this.state.profile.collections.map(collection => (
                   <div className="col-md-4">
                     <Card

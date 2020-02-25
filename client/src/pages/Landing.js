@@ -20,38 +20,18 @@ class Landing extends Component {
   };
 
   componentDidMount = () => {
-    API.getOneCollectionByType("Music")
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          searchResult: this.state.searchResult.concat(res.data)
-        });
-      })
-      .catch(err => console.log(err));
-    API.getOneCollectionByType("Comics")
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          searchResult: this.state.searchResult.concat(res.data)
-        });
-      })
-      .catch(err => console.log(err));
-    API.getOneCollectionByType("Currency")
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          searchResult: this.state.searchResult.concat(res.data)
-        });
-      })
-      .catch(err => console.log(err));
-    API.getOneCollectionByType("Cards")
-      .then(res => {
-        console.log(res.data);
-        this.setState({
-          searchResult: this.state.searchResult.concat(res.data)
-        });
-      })
-      .catch(err => console.log(err));
+    const typeOptions = ["Music", "Comics", "Currency", "Cards", "Other"];
+    typeOptions.map(option =>
+      API.getOneCollectionByType(option)
+        .then(res => {
+          if (res.data) {
+            this.setState({
+              searchResult: this.state.searchResult.concat(res.data)
+            });
+          }
+        })
+        .catch(err => console.log(err))
+    );
   };
 
   makeSearch = collectionType => {
@@ -98,7 +78,7 @@ class Landing extends Component {
                     }}
                   />
                 ))}
-             </div>
+              </div>
             ) : (
               <div className="divBaby">
                 <p>Make a search to see results!</p>

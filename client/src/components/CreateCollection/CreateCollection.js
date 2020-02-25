@@ -8,14 +8,14 @@ import SetType from "./SetType";
 import SetPrivate from "./SetPrivate";
 
 import Spinner from "../layout/Spinner";
-import Card from "../Cards";
+// import Card from "../Cards";
 
 const CreateCollection = props => {
   // console.log(props);
-  if (props.profile.profile) {
-    console.log(props.profile.profile._id);
-    console.log(props.profile.profile.collections);
-  }
+  // if (props.profile.profile) {
+  //   console.log(props.profile.profile._id);
+  //   console.log(props.profile.profile.collections);
+  // }
 
   return props.profile.loading && props.profile.profile === null ? (
     <Spinner />
@@ -44,7 +44,7 @@ const CreateCollection = props => {
           Create Collection
         </button>
       </form>
-      {props.profile.profile.collections.length ? (
+      {/* {props.profile.profile.collections.length ? (
         <div className="row justify-content-center">
           {props.profile.profile.collections.map(collection => (
             <Card
@@ -68,7 +68,7 @@ const CreateCollection = props => {
         </div>
       ) : (
         <p className="no-collections">No Collections Yet</p>
-      )}
+      )} */}
     </div>
   ) : (
     <div>

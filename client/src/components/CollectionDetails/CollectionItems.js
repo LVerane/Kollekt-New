@@ -25,13 +25,13 @@ function CollectionItems(props) {
           ) : // if this item was not selected to be edited, show the field values as normal
           // if it has the name image, display it as an image with the database value as the source, or the collection image if the item has none
           fields.name === "image" ? (
-            <div style={props.setWidth()}>
+            <div style={props.setWidth()} key={innerIndex}>
               <img
                 style={{
                   margin: "12px 0",
                   maxHeight: "50px"
                 }}
-                key={innerIndex}
+                // key={innerIndex}
                 src={item.image || props.collection.image}
                 alt="item thumbnail"
               ></img>
@@ -39,10 +39,10 @@ function CollectionItems(props) {
           ) : (
             // if it has the type date, moment fixes the format
             <p
-            className="collectionItemField"
-            style={props.setWidth()}
-            key={innerIndex}
-          >
+              className="collectionItemField"
+              style={props.setWidth()}
+              key={innerIndex}
+            >
               {fields.type === "date"
                 ? moment(item[fields.name]).format("MM-DD-YYYY")
                 : item[fields.name]}
